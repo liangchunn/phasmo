@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/phasmo/static/css/main.6dea0f05.chunk.css",
+    "main.js": "/phasmo/static/js/main.af19d412.chunk.js",
+    "main.js.map": "/phasmo/static/js/main.af19d412.chunk.js.map",
+    "runtime-main.js": "/phasmo/static/js/runtime-main.02bea89e.js",
+    "runtime-main.js.map": "/phasmo/static/js/runtime-main.02bea89e.js.map",
+    "static/css/2.1a02f21c.chunk.css": "/phasmo/static/css/2.1a02f21c.chunk.css",
+    "static/js/2.f6658e52.chunk.js": "/phasmo/static/js/2.f6658e52.chunk.js",
+    "static/js/2.f6658e52.chunk.js.map": "/phasmo/static/js/2.f6658e52.chunk.js.map",
+    "static/js/3.8a9bc14b.chunk.js": "/phasmo/static/js/3.8a9bc14b.chunk.js",
+    "static/js/3.8a9bc14b.chunk.js.map": "/phasmo/static/js/3.8a9bc14b.chunk.js.map",
+    "index.html": "/phasmo/index.html",
+    "static/css/2.1a02f21c.chunk.css.map": "/phasmo/static/css/2.1a02f21c.chunk.css.map",
+    "static/css/main.6dea0f05.chunk.css.map": "/phasmo/static/css/main.6dea0f05.chunk.css.map",
+    "static/js/2.f6658e52.chunk.js.LICENSE.txt": "/phasmo/static/js/2.f6658e52.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.02bea89e.js",
+    "static/css/2.1a02f21c.chunk.css",
+    "static/js/2.f6658e52.chunk.js",
+    "static/css/main.6dea0f05.chunk.css",
+    "static/js/main.af19d412.chunk.js"
+  ]
+}
