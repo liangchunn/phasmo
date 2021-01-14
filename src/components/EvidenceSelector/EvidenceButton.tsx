@@ -30,6 +30,7 @@ export default function EvidenceButton<T>({
       disabled={disabled}
       variant={buttonVariant}
       className="mb-2 mr-2"
+      size="lg"
     >
       <img src={imgSrc} alt={label} className="pixelated mr-1" />
       {label}
