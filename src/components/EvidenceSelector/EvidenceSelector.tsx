@@ -41,7 +41,9 @@ export default function EvidenceSelector({
                   evidenceKey
                 )))
           }
-          isSelected={selectedEvidence.includes(evidenceKey)}
+          isSelected={
+            selectedEvidence.includes(evidenceKey) && !isInEliminateMode
+          }
         />
       ))}
     </div>
