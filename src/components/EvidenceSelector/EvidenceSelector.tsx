@@ -10,12 +10,16 @@ type EvidenceSelectorProps = {
   selectedEvidence: EvidenceKey[]
   onEvidenceToggle: (e: EvidenceKey) => void
   possibleLeftoverEvidence: EvidenceKey[]
+  eliminatedEvidence: EvidenceKey[]
+  isInEliminateMode: boolean
 }
 
 export default function EvidenceSelector({
   selectedEvidence,
   onEvidenceToggle,
   possibleLeftoverEvidence,
+  eliminatedEvidence,
+  isInEliminateMode,
 }: EvidenceSelectorProps) {
   return (
     <div className="mb-2">
@@ -25,10 +29,17 @@ export default function EvidenceSelector({
           imgSrc={evidenceImage[evidenceKey]}
           label={evidence[evidenceKey]}
           onClick={onEvidenceToggle}
+          isEliminated={eliminatedEvidence.includes(evidenceKey)}
           value={evidenceKey}
           disabled={
-            !selectedEvidence.includes(evidenceKey) &&
-            !possibleLeftoverEvidence.includes(evidenceKey)
+            (!selectedEvidence.includes(evidenceKey) &&
+              !possibleLeftoverEvidence.includes(evidenceKey) &&
+              !isInEliminateMode) ||
+            (isInEliminateMode &&
+              (selectedEvidence.includes(evidenceKey) ||
+                ![...possibleLeftoverEvidence, ...eliminatedEvidence].includes(
+                  evidenceKey
+                )))
           }
           isSelected={selectedEvidence.includes(evidenceKey)}
         />

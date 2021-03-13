@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Button, Modal } from 'react-bootstrap'
-import { GhostKeys, ghosts } from '../../util/ghosts'
+import { getGhostEvidenceImages, GhostKeys, ghosts } from '../../util/ghosts'
 import GhostDescription from '../GhostDescription/GhostDescription'
 
 type GhostDescriptionPopupProps = {
@@ -20,7 +20,16 @@ export default function GhostDescriptionPopup({
       </Button>
       <Modal show={open} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>{ghosts[ghostKey]}</Modal.Title>
+          <Modal.Title className="d-flex align-items-center">
+            {ghosts[ghostKey]}
+            {getGhostEvidenceImages(ghostKey).map(([evidence, src]) => (
+              <img
+                src={src}
+                alt={`evidence ${evidence}`}
+                className="pixelated ml-1"
+              />
+            ))}
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <GhostDescription ghostKey={ghostKey} />

@@ -6,6 +6,7 @@ type EvidenceButtonProps<T> = {
   onClick: (label: T) => void
   disabled?: boolean
   isSelected: boolean
+  isEliminated: boolean
 }
 
 export default function EvidenceButton<T>({
@@ -15,11 +16,14 @@ export default function EvidenceButton<T>({
   disabled,
   value,
   isSelected,
+  isEliminated,
 }: EvidenceButtonProps<T>) {
   const handleClick = () => {
     onClick(value)
   }
-  const buttonVariant = isSelected
+  const buttonVariant = isEliminated
+    ? 'outline-danger'
+    : isSelected
     ? 'primary'
     : !disabled
     ? 'secondary'
@@ -29,8 +33,7 @@ export default function EvidenceButton<T>({
       onClick={handleClick}
       disabled={disabled}
       variant={buttonVariant}
-      className="mb-2 mr-2"
-      size="lg"
+      className={`mb-2 mr-2 ${isEliminated ? 'strikethrough' : ''}`}
     >
       <img src={imgSrc} alt={label} className="pixelated mr-1" />
       {label}

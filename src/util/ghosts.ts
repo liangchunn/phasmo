@@ -138,3 +138,12 @@ export const ghostWeaknesses: Record<GhostKeys, string> = {
   spirit:
     'Using Smudge Sticks on a Spirit will stop it attacking for 180 seconds instead of 90.',
 }
+
+export function getGhostEvidenceImages(
+  ghostKey: GhostKeys
+): [EvidenceKey, string][] {
+  return ghostEvidence[ghostKey].map((evidence) => [
+    evidence,
+    evidenceImage[evidence],
+  ])
+}

@@ -19,7 +19,7 @@ export default function HintPane({
   return (
     <>
       <Card className="mb-2">
-        <Card.Header>Possible leftover evidence</Card.Header>
+        <Card.Header>Possible Remaining Evidence</Card.Header>
         <Card.Body>
           <div className="d-flex justify-content-center flex-wrap">
             {possibleLeftoverEvidence.map((key) => (
@@ -38,7 +38,7 @@ export default function HintPane({
         </Card.Body>
       </Card>
       <Card>
-        <Card.Header>Possible ghosts</Card.Header>
+        <Card.Header>Possible Ghosts</Card.Header>
         <Card.Body>
           <div className="d-flex justify-content-center flex-wrap">
             {possibleGhosts.map((key) => (

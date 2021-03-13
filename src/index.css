@@ -15,3 +15,7 @@ code {
 .pixelated {
   image-rendering: pixelated;
 }
+
+.strikethrough {
+  text-decoration: line-through;
+}
