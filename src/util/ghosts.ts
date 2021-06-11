@@ -44,6 +44,8 @@ export const ghosts = {
   revenant: 'Revenant',
   poltergeist: 'Poltergeist',
   spirit: 'Spirit',
+  yokai: 'Yokai',
+  hantu: 'Hantu',
 }
 
 export type GhostKeys = keyof typeof ghosts
@@ -63,6 +65,8 @@ export const ghostEvidence: Record<GhostKeys, EvidenceKey[]> = {
   revenant: ['emf', 'writing', 'fingerprints'],
   poltergeist: ['orb', 'spirit', 'fingerprints'],
   spirit: ['spirit', 'writing', 'fingerprints'],
+  yokai: ['spirit', 'orb', 'writing'],
+  hantu: ['fingerprints', 'orb', 'writing'],
 }
 
 export const ghostDescription: Record<GhostKeys, string> = {
@@ -70,34 +74,34 @@ export const ghostDescription: Record<GhostKeys, string> = {
     'A Phantom is a Ghost that can possess the living, most commonly summoned by a Ouija Board. It also induces fear into those around it.',
   banshee:
     'A Banshee is a natural hunter and will attack anything. It has been known to stalk its prey one at a time until making its kill.',
-  mare:
-    'A Mare is the source of all nightmares, making it most powerful in the dark.',
+  mare: 'A Mare is the source of all nightmares, making it most powerful in the dark.',
   yurei:
     'A Yurei is a Ghost that has returned to the physical world, usually for the purpose of revenge or hatred.',
   demon:
     'A Demon is one of the worst Ghosts you can encounter. It has been known to attack without a reason.',
   wraith:
     'A Wraith is one of the most dangerous Ghosts you will find. It is also the only known ghost that has the ability of flight and has sometimes been known to travel through walls.',
-  jinn:
-    'A Jinn is a territorial Ghost that will attack when threatened. It also has been known to travel at significant speed.',
+  jinn: 'A Jinn is a territorial Ghost that will attack when threatened. It also has been known to travel at significant speed.',
   shade:
     'A Shade is known to be a Shy Ghost. There is evidence that a Shade will stop all paranormal activity if there are multiple people nearby.',
-  oni:
-    'Onis are a cousin to the Demon and possess extreme strength. There have been rumors that they become more active around their prey',
+  oni: 'Onis are a cousin to the Demon and possess extreme strength. There have been rumors that they become more active around their prey',
   revenant:
     'A Revenant is a slow but violent Ghost that will attack indiscriminantly. It has been rumored to travel at a significantly high speed when hunting.',
   poltergeist:
     "One of the most famous Ghosts, a Poltergeist, also known as a noisy ghost can manipulate objects around it to spread fear into it's victims.",
   spirit:
     'A Spirit is the most common Ghost you will come across however it is still very powerful and dangerous. They are usually discovered at one of their hunting grounds after an unexplained death.',
+  yokai:
+    'A Yokai is a common type of ghost that is attracted to human voices. They can usually be found haunting family homes.',
+  hantu:
+    'A Hantu is a rare ghost that can be found in hot climates. They are known to attack often during cold weather.',
 }
 
 export const ghostStrengths: Record<GhostKeys, string> = {
   phantom:
     'Looking at a Phantom will considerably drop your Sanity. This refers to any visible manifestations of the Phantom, including during a Hunt.',
   banshee: 'A Banshee will focus on one player at a time until it kills them.',
-  mare:
-    'Increased chance to attack in the dark. As such, it will do what it can to achieve this, such as turning off lights and tripping the fuse box.',
+  mare: 'Increased chance to attack in the dark. As such, it will do what it can to achieve this, such as turning off lights and tripping the fuse box.',
   yurei:
     "Yurei have been known to have a stronger effect on people's Sanity during a manifestation.",
   demon: 'Demons are the most aggressive and enter hunt mode more.',
@@ -106,14 +110,16 @@ export const ghostStrengths: Record<GhostKeys, string> = {
   jinn: 'A Jinn will travel at a faster speed if its victim is far away.',
   shade:
     'As a shy ghost, a Shade will rarely perform actions in the presence of two or more people, making it harder to detect.',
-  oni:
-    'Oni are more active when people are nearby and have been seen moving objects at great speed.',
+  oni: 'Oni are more active when people are nearby and have been seen moving objects at great speed.',
   revenant:
     'A Revenant will travel at a significantly faster speed when hunting a victim. Additionally, the Revenant can freely switch whoever it is targeting during a Hunt.',
   poltergeist:
     'A Poltergeist is capable of influencing more objects at once than any other Ghosts, and is capable of shutting multiple doors at once.',
   spirit:
     'The spirit has no discernible strengths, however it is known to increase its hunting as your sanity drops.',
+  yokai:
+    "Talking near a Yokai will anger it and increase it's chance of attacking.",
+  hantu: 'Lower temperatures can cause the Hantu to move at faster speeds.',
 }
 
 export const ghostWeaknesses: Record<GhostKeys, string> = {
@@ -128,8 +134,7 @@ export const ghostWeaknesses: Record<GhostKeys, string> = {
     "Asking a Demon successful questions on the Ouija Board won't lower the user's sanity.",
   wraith:
     'Wraiths have a toxic reaction to Salt. If a Wraith comes into contact with a pile of salt, it will immediately cease attacking.',
-  jinn:
-    "Turning off the location's power source will prevent the Jinn from using its ability.",
+  jinn: "Turning off the location's power source will prevent the Jinn from using its ability.",
   shade:
     'Conversely, a Shade will rarely start a Hunt when players are grouped together.',
   oni: 'Being more active will make the Oni easier to find and identify.',
@@ -137,6 +142,8 @@ export const ghostWeaknesses: Record<GhostKeys, string> = {
   poltergeist: 'A Poltergeist is almost ineffective in an empty room.',
   spirit:
     'Using Smudge Sticks on a Spirit will stop it attacking for 180 seconds instead of 90.',
+  yokai: 'When hunting a Yokai can only hear voices close to it.',
+  hantu: 'A Hantu will move slower in warmer areas.',
 }
 
 export function getGhostEvidenceImages(

@@ -1,18 +1,35 @@
 import React, { useCallback, useMemo, useState } from 'react'
 import { Button, Card } from 'react-bootstrap'
 import { narrowDecision } from './util/decider'
-import { EvidenceKey, ghosts } from './util/ghosts'
+import { allGhostsKeys, EvidenceKey, ghosts } from './util/ghosts'
 import { setToArray } from './util/setToArray'
 import EvidenceSelector from './components/EvidenceSelector'
 import { without } from 'lodash'
 import HintPane from './components/HintPane'
 import GhostDescription from './components/GhostDescription'
+import Options from './components/Options'
 
 export default function App() {
   const [toggledEvidence, setEvidence] = useState<EvidenceKey[]>([])
   const [isInEliminateMode, setIsInEliminateMode] = useState(false)
   const [eliminatedEvidence, setEliminatedEvidence] = useState<EvidenceKey[]>(
     []
+  )
+  // TODO: respect feature toggles instead of loading all ghost keys
+  const [ghostKeys, setGhostKeys] = useState(allGhostsKeys)
+
+  // TODO: probably move this into something like a reducer, it's a little too complex for now
+  const handleYokaiAndHantuToggle = useCallback(
+    (enable: boolean) => {
+      if (enable) {
+        setGhostKeys(allGhostsKeys)
+      } else {
+        setGhostKeys(
+          allGhostsKeys.filter((k) => k !== 'yokai' && k !== 'hantu')
+        )
+      }
+    },
+    [setGhostKeys]
   )
 
   const handleEvidenceToggle = useCallback(
@@ -39,12 +56,16 @@ export default function App() {
   }
 
   const { possibleLeftoverEvidence, possibleGhosts } = useMemo(() => {
-    const result = narrowDecision(toggledEvidence, eliminatedEvidence)
+    const result = narrowDecision(
+      ghostKeys,
+      toggledEvidence,
+      eliminatedEvidence
+    )
     return {
       possibleLeftoverEvidence: setToArray(result.possibleLeftoverEvidence),
       possibleGhosts: setToArray(result.possibleGhosts),
     }
-  }, [toggledEvidence, eliminatedEvidence])
+  }, [toggledEvidence, eliminatedEvidence, ghostKeys])
 
   const hasEvidence = useMemo(() => !!toggledEvidence.length, [toggledEvidence])
 
@@ -58,9 +79,16 @@ export default function App() {
     <Card>
       <Card.Header className="d-flex align-items-center justify-content-between">
         <h5 className="mb-0">Phasmophobia Ghost Identifier 👻</h5>
-        <Button onClick={handleReset} variant="danger">
-          Reset
-        </Button>
+        <div>
+          <Options
+            featureHandlerMap={{
+              ENABLE_BETA_HANTU_AND_YOKAI: handleYokaiAndHantuToggle,
+            }}
+          />
+          <Button onClick={handleReset} variant="danger" className="ml-2">
+            Reset
+          </Button>
+        </div>
       </Card.Header>
       <Card.Body>
         <Card className="mb-4">
