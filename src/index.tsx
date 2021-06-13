@@ -30,7 +30,11 @@ ReactDOM.render(
               <Link href="https://github.com/liangchunn" target="_blank">
                 @liangchunn
               </Link>
-              ). Not affiliated with, or endorsed by Kinetic Games.
+              ).{' '}
+              <Link href="https://github.com/liangchunn/phasmo" target="_blank">
+                View Source in GitHub
+              </Link>
+              . Not affiliated with, or endorsed by Kinetic Games.
             </Text>
           </Grid>
         </Container>
