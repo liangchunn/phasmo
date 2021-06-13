@@ -1,13 +1,14 @@
 import { difference, without } from 'lodash'
-import { allGhostsKeys, EvidenceKey, GhostKeys, ghostEvidence } from './ghosts'
+import { EvidenceKey, GhostKeys, ghostEvidence } from './ghosts'
 
 export function narrowDecision(
+  ghostKeys: GhostKeys[],
   evidence: EvidenceKey[],
   eliminatedEvidence: EvidenceKey[] = []
 ) {
   const possibleGhosts: Set<GhostKeys> = new Set()
   const possibleLeftoverEvidence: Set<EvidenceKey> = new Set()
-  for (const key of allGhostsKeys) {
+  for (const key of ghostKeys) {
     if (
       eliminatedEvidence.length &&
       ghostEvidence[key].some((e) => eliminatedEvidence.includes(e))

@@ -1,21 +1,41 @@
-import React from 'react'
+import { StrictMode } from 'react'
 import ReactDOM from 'react-dom'
+import {
+  Box,
+  ChakraProvider,
+  Container,
+  Divider,
+  Grid,
+  Link,
+  Text,
+} from '@chakra-ui/react'
 import './index.css'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
-import 'bootstrap/dist/css/bootstrap.min.css'
-import { Col, Container, Row } from 'react-bootstrap'
 
 ReactDOM.render(
-  <React.StrictMode>
-    <Container className="mt-4 mb-4">
-      <Row className="justify-content-md-center">
-        <Col sm="12" md="8">
-          <App />
-        </Col>
-      </Row>
-    </Container>
-  </React.StrictMode>,
+  <StrictMode>
+    <ChakraProvider>
+      <Box textAlign="center" size="xl" marginTop={4}>
+        <Container>
+          <Box minHeight="100vh">
+            <App />
+          </Box>
+          <Grid marginTop={4} marginBottom={4} gap={2}>
+            <Divider />
+            <Text size="sm">
+              Phasmophobia Ghost Identifier is Copyright ©{' '}
+              {new Date().getFullYear()} Liang Chun Wong (
+              <Link href="https://github.com/liangchunn" target="_blank">
+                @liangchunn
+              </Link>
+              ). Not affiliated with, or endorsed by Kinetic Games.
+            </Text>
+          </Grid>
+        </Container>
+      </Box>
+    </ChakraProvider>
+  </StrictMode>,
   document.getElementById('root')
 )
 

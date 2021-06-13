@@ -1,4 +1,13 @@
-import { Card } from 'react-bootstrap'
+import {
+  Text,
+  Box,
+  Flex,
+  Wrap,
+  WrapItem,
+  Grid,
+  Heading,
+  Image,
+} from '@chakra-ui/react'
 import {
   evidence,
   evidenceImage,
@@ -18,35 +27,47 @@ export default function HintPane({
 }: HintPaneProps) {
   return (
     <>
-      <Card className="mb-2">
-        <Card.Header>Possible Remaining Evidence</Card.Header>
-        <Card.Body>
-          <div className="d-flex justify-content-center flex-wrap">
+      <Grid gap={2}>
+        <Box>
+          <Heading align="left" size="md">
+            Possible Remaining Evidence
+          </Heading>
+        </Box>
+        <Box>
+          <Wrap justify="center">
             {possibleLeftoverEvidence.map((key) => (
-              <div className="d-flex flex-column align-items-center mr-2">
-                <img
-                  src={evidenceImage[key]}
-                  alt={evidence[key]}
-                  width={48}
-                  height={48}
-                  className="pixelated"
-                />
-                <p className="font-weight-bold">{evidence[key]}</p>
-              </div>
+              <WrapItem key={key}>
+                <Flex direction="column" align="center">
+                  <Image
+                    src={evidenceImage[key]}
+                    alt={evidence[key]}
+                    htmlWidth={48}
+                    htmlHeight={48}
+                    sx={{ imageRendering: 'pixelated' }}
+                  />
+                  <Text size="md">{evidence[key]}</Text>
+                </Flex>
+              </WrapItem>
             ))}
-          </div>
-        </Card.Body>
-      </Card>
-      <Card>
-        <Card.Header>Possible Ghosts</Card.Header>
-        <Card.Body>
-          <div className="d-flex justify-content-center flex-wrap">
+          </Wrap>
+        </Box>
+      </Grid>
+      <Grid gap={2}>
+        <Box>
+          <Heading align="left" size="md">
+            Possible Ghosts
+          </Heading>
+        </Box>
+        <Box>
+          <Wrap justify="center">
             {possibleGhosts.map((key) => (
-              <GhostDescriptionPopup ghostKey={key} />
+              <WrapItem key={key}>
+                <GhostDescriptionPopup ghostKey={key} />
+              </WrapItem>
             ))}
-          </div>
-        </Card.Body>
-      </Card>
+          </Wrap>
+        </Box>
+      </Grid>
     </>
   )
 }

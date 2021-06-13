@@ -1,19 +1,64 @@
-import React, { useCallback, useMemo, useState } from 'react'
-import { Button, Card } from 'react-bootstrap'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import {
+  Box,
+  Button,
+  Spacer,
+  Stack,
+  Text,
+  Flex,
+  Grid,
+  Divider,
+  Heading,
+} from '@chakra-ui/react'
+import { without } from 'lodash'
 import { narrowDecision } from './util/decider'
-import { EvidenceKey, ghosts } from './util/ghosts'
+import { allGhostsKeys, EvidenceKey, ghosts } from './util/ghosts'
 import { setToArray } from './util/setToArray'
 import EvidenceSelector from './components/EvidenceSelector'
-import { without } from 'lodash'
 import HintPane from './components/HintPane'
 import GhostDescription from './components/GhostDescription'
+import Options from './components/Options'
+import { ColorModeSwitcher } from './ColorModeSwitcher'
+import { useLocalStorage } from './hooks/useLocalStorage'
+import { FeatureToggleKey, FEATURE_TOGGLE } from './util/features'
 
 export default function App() {
+  const [options, setOptions] = useLocalStorage<
+    Record<FeatureToggleKey, boolean>
+  >('options', FEATURE_TOGGLE)
+
   const [toggledEvidence, setEvidence] = useState<EvidenceKey[]>([])
   const [isInEliminateMode, setIsInEliminateMode] = useState(false)
   const [eliminatedEvidence, setEliminatedEvidence] = useState<EvidenceKey[]>(
     []
   )
+  const [ghostKeys, setGhostKeys] = useState(allGhostsKeys)
+
+  const handleYokaiAndHantuToggle = useCallback(
+    (enable: boolean) => {
+      if (enable) {
+        setGhostKeys(allGhostsKeys)
+      } else {
+        setGhostKeys(
+          allGhostsKeys.filter((k) => k !== 'yokai' && k !== 'hantu')
+        )
+      }
+    },
+    [setGhostKeys]
+  )
+
+  const effectMap: Record<FeatureToggleKey, (val: boolean) => void> = useMemo(
+    () => ({
+      ENABLE_BETA_HANTU_AND_YOKAI: handleYokaiAndHantuToggle,
+    }),
+    [handleYokaiAndHantuToggle]
+  )
+
+  useEffect(() => {
+    ;(Object.keys(options) as FeatureToggleKey[]).forEach((key) => {
+      effectMap[key](options[key])
+    })
+  }, [options, effectMap])
 
   const handleEvidenceToggle = useCallback(
     (e: EvidenceKey) => {
@@ -39,12 +84,16 @@ export default function App() {
   }
 
   const { possibleLeftoverEvidence, possibleGhosts } = useMemo(() => {
-    const result = narrowDecision(toggledEvidence, eliminatedEvidence)
+    const result = narrowDecision(
+      ghostKeys,
+      toggledEvidence,
+      eliminatedEvidence
+    )
     return {
       possibleLeftoverEvidence: setToArray(result.possibleLeftoverEvidence),
       possibleGhosts: setToArray(result.possibleGhosts),
     }
-  }, [toggledEvidence, eliminatedEvidence])
+  }, [toggledEvidence, eliminatedEvidence, ghostKeys])
 
   const hasEvidence = useMemo(() => !!toggledEvidence.length, [toggledEvidence])
 
@@ -55,69 +104,79 @@ export default function App() {
   }, [])
 
   return (
-    <Card>
-      <Card.Header className="d-flex align-items-center justify-content-between">
-        <h5 className="mb-0">Phasmophobia Ghost Identifier 👻</h5>
-        <Button onClick={handleReset} variant="danger">
-          Reset
-        </Button>
-      </Card.Header>
-      <Card.Body>
-        <Card className="mb-4">
-          <Card.Header className="d-flex align-items-center justify-content-between">
-            <span>Select Evidence</span>
-            <Button
-              onClick={handleEliminateToggle}
-              variant={isInEliminateMode ? 'primary' : 'outline-secondary'}
-              size="sm"
-            >
-              {isInEliminateMode ? 'Eliminate Mode On' : 'Eliminate Mode Off'}
+    <Grid gap={4}>
+      <Box>
+        <Flex align="center">
+          <Heading size="md">👻🔎</Heading>
+          <Spacer />
+          <Stack spacing={2} direction="row" align="center">
+            <ColorModeSwitcher />
+            <Options options={options} setOptions={setOptions} />
+            <Button onClick={handleReset} colorScheme="red">
+              Reset
             </Button>
-          </Card.Header>
-          <Card.Body>
-            <EvidenceSelector
-              onEvidenceToggle={handleEvidenceToggle}
-              selectedEvidence={toggledEvidence}
-              eliminatedEvidence={eliminatedEvidence}
-              isInEliminateMode={isInEliminateMode}
-              possibleLeftoverEvidence={possibleLeftoverEvidence}
-            />
-            {!hasEvidence && !isInEliminateMode && (
-              <Card.Subtitle className="mb-2 mt-2 text-muted">
-                Select existing evidence to discover the possible remaining
-                evidence.
-              </Card.Subtitle>
-            )}
-            {isInEliminateMode && (
-              <Card.Subtitle className="mb-2 mt-2 text-muted">
-                Eliminate evidence by toggling evidence that are singled-out.
-              </Card.Subtitle>
-            )}
-          </Card.Body>
-        </Card>
-        {hasEvidence && possibleGhosts.length !== 1 && (
-          <HintPane
-            possibleGhosts={possibleGhosts}
+          </Stack>
+        </Flex>
+      </Box>
+      <Grid gap={2}>
+        <Flex align="center">
+          <Heading size="md">Select Evidence</Heading>
+          <Spacer />
+          <Button
+            onClick={handleEliminateToggle}
+            variant={isInEliminateMode ? 'solid' : 'outline'}
+            colorScheme={isInEliminateMode ? 'blue' : 'black'}
+            size="sm"
+          >
+            {isInEliminateMode ? 'Eliminate Mode On' : 'Eliminate Mode Off'}
+          </Button>
+        </Flex>
+        <Box>
+          <EvidenceSelector
+            onEvidenceToggle={handleEvidenceToggle}
+            selectedEvidence={toggledEvidence}
+            eliminatedEvidence={eliminatedEvidence}
+            isInEliminateMode={isInEliminateMode}
             possibleLeftoverEvidence={possibleLeftoverEvidence}
           />
-        )}
-        {possibleGhosts.length === 1 && (
-          <>
-            <Card.Title>
+        </Box>
+        <Box>
+          {!hasEvidence && !isInEliminateMode && (
+            <Text color="gray.500" size="md">
+              Select existing evidence to narrow down remaining evidence
+            </Text>
+          )}
+          {isInEliminateMode && (
+            <Text color="gray.500" size="md">
+              Eliminate evidence which are ruled-out by toggling
+            </Text>
+          )}
+        </Box>
+      </Grid>
+      {hasEvidence && <Divider />}
+      {hasEvidence && possibleGhosts.length !== 1 && (
+        <HintPane
+          possibleGhosts={possibleGhosts}
+          possibleLeftoverEvidence={possibleLeftoverEvidence}
+        />
+      )}
+      {possibleGhosts.length === 1 && (
+        <Grid gap={2}>
+          <Box>
+            <Heading size="md">
               The ghost is a{' '}
-              <span className="font-weight-bold">
+              <span
+                style={{ fontStyle: 'italic', textDecoration: 'underline' }}
+              >
                 {ghosts[possibleGhosts[0]]}
               </span>
-            </Card.Title>
+            </Heading>
+          </Box>
+          <Box>
             <GhostDescription ghostKey={possibleGhosts[0]} />
-          </>
-        )}
-      </Card.Body>
-      {/* <Card.Footer className="justify-content-end">
-        <Button onClick={handleReset} variant="danger">
-          Reset
-        </Button>
-      </Card.Footer> */}
-    </Card>
+          </Box>
+        </Grid>
+      )}
+    </Grid>
   )
 }
