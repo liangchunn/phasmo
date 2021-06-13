@@ -37,6 +37,7 @@ export default function GhostDescriptionPopup({
               <Text>{ghosts[ghostKey]}</Text>
               {getGhostEvidenceImages(ghostKey).map(([evidence, src]) => (
                 <Image
+                  key={evidence}
                   src={src}
                   alt={`evidence ${evidence}`}
                   sx={{ imageRendering: 'pixelated' }}

@@ -1,12 +1,4 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { narrowDecision } from './util/decider'
-import { allGhostsKeys, EvidenceKey, ghosts } from './util/ghosts'
-import { setToArray } from './util/setToArray'
-import EvidenceSelector from './components/EvidenceSelector'
-import { without } from 'lodash'
-import HintPane from './components/HintPane'
-import GhostDescription from './components/GhostDescription'
-import Options from './components/Options'
 import {
   Box,
   Button,
@@ -18,16 +10,22 @@ import {
   Divider,
   Heading,
 } from '@chakra-ui/react'
+import { without } from 'lodash'
+import { narrowDecision } from './util/decider'
+import { allGhostsKeys, EvidenceKey, ghosts } from './util/ghosts'
+import { setToArray } from './util/setToArray'
+import EvidenceSelector from './components/EvidenceSelector'
+import HintPane from './components/HintPane'
+import GhostDescription from './components/GhostDescription'
+import Options from './components/Options'
 import { ColorModeSwitcher } from './ColorModeSwitcher'
 import { useLocalStorage } from './hooks/useLocalStorage'
-import { FeatureToggleKey } from './util/features'
+import { FeatureToggleKey, FEATURE_TOGGLE } from './util/features'
 
 export default function App() {
   const [options, setOptions] = useLocalStorage<
     Record<FeatureToggleKey, boolean>
-  >('options', {
-    ENABLE_BETA_HANTU_AND_YOKAI: false,
-  })
+  >('options', FEATURE_TOGGLE)
 
   const [toggledEvidence, setEvidence] = useState<EvidenceKey[]>([])
   const [isInEliminateMode, setIsInEliminateMode] = useState(false)
@@ -167,7 +165,9 @@ export default function App() {
           <Box>
             <Heading size="md">
               The ghost is a{' '}
-              <span style={{ fontStyle: 'italic' }}>
+              <span
+                style={{ fontStyle: 'italic', textDecoration: 'underline' }}
+              >
                 {ghosts[possibleGhosts[0]]}
               </span>
             </Heading>

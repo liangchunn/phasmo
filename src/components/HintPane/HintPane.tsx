@@ -36,7 +36,7 @@ export default function HintPane({
         <Box>
           <Wrap justify="center">
             {possibleLeftoverEvidence.map((key) => (
-              <WrapItem>
+              <WrapItem key={key}>
                 <Flex direction="column" align="center">
                   <Image
                     src={evidenceImage[key]}

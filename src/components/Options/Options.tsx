@@ -56,6 +56,7 @@ const Options: React.FC<OptionsProps> = ({ options, setOptions }) => {
             {ALL_FEATURE_TOGGLES.map((key) => {
               return (
                 <Checkbox
+                  key={key}
                   onChange={handleValueChange(key)}
                   defaultChecked={options[key]}
                 >

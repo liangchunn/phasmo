@@ -1,17 +1,17 @@
 import { StrictMode } from 'react'
 import ReactDOM from 'react-dom'
+import {
+  Box,
+  ChakraProvider,
+  Container,
+  Divider,
+  Grid,
+  Link,
+  Text,
+} from '@chakra-ui/react'
 import './index.css'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
-import {
-  Box,
-  Container,
-  Text,
-  ChakraProvider,
-  Link,
-  Divider,
-  Grid,
-} from '@chakra-ui/react'
 
 ReactDOM.render(
   <StrictMode>
@@ -21,10 +21,11 @@ ReactDOM.render(
           <Box minHeight="100vh">
             <App />
           </Box>
-          <Grid marginBottom={4} gap={2}>
+          <Grid marginTop={4} marginBottom={4} gap={2}>
             <Divider />
-            <Text>
-              Copyright © {new Date().getFullYear()} Liang Chun Wong (
+            <Text size="sm">
+              Phasmophobia Ghost Identifier is Copyright ©{' '}
+              {new Date().getFullYear()} Liang Chun Wong (
               <Link href="https://github.com/liangchunn" target="_blank">
                 @liangchunn
               </Link>

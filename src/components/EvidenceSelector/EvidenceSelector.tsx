@@ -25,9 +25,8 @@ export default function EvidenceSelector({
   return (
     <Wrap spacing={2}>
       {allEvidenceKeys.map((evidenceKey) => (
-        <WrapItem>
+        <WrapItem key={evidenceKey}>
           <EvidenceButton
-            key={evidenceKey}
             imgSrc={evidenceImage[evidenceKey]}
             label={evidence[evidenceKey]}
             onClick={onEvidenceToggle}
