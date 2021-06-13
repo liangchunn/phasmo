@@ -1,4 +1,5 @@
-import { Button } from 'react-bootstrap'
+import { Button, Image } from '@chakra-ui/react'
+
 type EvidenceButtonProps<T> = {
   label: string
   imgSrc: string
@@ -22,20 +23,26 @@ export default function EvidenceButton<T>({
     onClick(value)
   }
   const buttonVariant = isEliminated
-    ? 'outline-danger'
+    ? 'outline'
     : isSelected
-    ? 'primary'
+    ? 'solid'
     : !disabled
-    ? 'secondary'
-    : 'outline-secondary'
+    ? 'solid'
+    : 'outline'
+
+  const buttonScheme = isEliminated ? 'red' : isSelected ? 'blue' : 'gray'
+
   return (
     <Button
       onClick={handleClick}
-      disabled={disabled}
+      disabled={disabled || false}
       variant={buttonVariant}
-      className={`mb-2 mr-2 ${isEliminated ? 'strikethrough' : ''}`}
+      colorScheme={buttonScheme}
+      sx={isEliminated ? { textDecoration: 'line-through' } : {}}
+      leftIcon={
+        <Image src={imgSrc} alt={label} sx={{ imageRendering: 'pixelated' }} />
+      }
     >
-      <img src={imgSrc} alt={label} className="pixelated mr-1" />
       {label}
     </Button>
   )

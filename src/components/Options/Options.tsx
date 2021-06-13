@@ -1,6 +1,17 @@
-import React, { FormEvent, useState } from 'react'
+import {
+  Button,
+  Modal,
+  useDisclosure,
+  ModalOverlay,
+  ModalCloseButton,
+  ModalContent,
+  ModalHeader,
+  Checkbox,
+  ModalBody,
+  ModalFooter,
+} from '@chakra-ui/react'
+import React, { FormEvent } from 'react'
 import { useCallback } from 'react'
-import { Modal, Button, Form } from 'react-bootstrap'
 import {
   ALL_FEATURE_TOGGLES,
   FeatureToggleKey,
@@ -8,52 +19,57 @@ import {
 } from '../../util/features'
 
 type OptionsProps = {
-  featureHandlerMap: Record<FeatureToggleKey, (enable: boolean) => void>
+  options: Record<FeatureToggleKey, boolean>
+  setOptions: (
+    value:
+      | Record<FeatureToggleKey, boolean>
+      | ((
+          val: Record<FeatureToggleKey, boolean>
+        ) => Record<FeatureToggleKey, boolean>)
+  ) => void
 }
 
-const Options: React.FC<OptionsProps> = ({ featureHandlerMap }) => {
-  const [open, setOpen] = useState(false)
-  const handleClose = () => setOpen(false)
-  const handleOpen = () => setOpen(true)
-
+const Options: React.FC<OptionsProps> = ({ options, setOptions }) => {
+  const { isOpen, onOpen, onClose } = useDisclosure()
   // TODO: handle this better
   const handleValueChange = useCallback(
     (featureKey: FeatureToggleKey) => (event: FormEvent<HTMLInputElement>) => {
-      featureHandlerMap[featureKey](event.currentTarget.checked)
+      setOptions({
+        ...options,
+        [featureKey]: event.currentTarget.checked,
+      })
     },
-    [featureHandlerMap]
+    [options, setOptions]
   )
+
   return (
     <>
-      <Button variant="outline-dark" onClick={handleOpen}>
+      <Button variant="outline" onClick={onOpen}>
         Options
       </Button>
-      <Modal show={open} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title className="d-flex align-items-center">
-            Options
-          </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Options</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
             {ALL_FEATURE_TOGGLES.map((key) => {
               return (
-                <Form.Group>
-                  <Form.Check
-                    type="checkbox"
-                    label={FEATURE_TOGGLE_NAME[key]}
-                    onChange={handleValueChange(key)}
-                  />
-                </Form.Group>
+                <Checkbox
+                  onChange={handleValueChange(key)}
+                  defaultChecked={options[key]}
+                >
+                  {FEATURE_TOGGLE_NAME[key]}
+                </Checkbox>
               )
             })}
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="primary" onClick={handleClose}>
-            Done
-          </Button>
-        </Modal.Footer>
+          </ModalBody>
+          <ModalFooter>
+            <Button colorScheme="blue" onClick={onClose}>
+              Done
+            </Button>
+          </ModalFooter>
+        </ModalContent>
       </Modal>
     </>
   )

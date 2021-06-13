@@ -1,21 +1,40 @@
-import React from 'react'
+import { StrictMode } from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
-import 'bootstrap/dist/css/bootstrap.min.css'
-import { Col, Container, Row } from 'react-bootstrap'
+import {
+  Box,
+  Container,
+  Text,
+  ChakraProvider,
+  Link,
+  Divider,
+  Grid,
+} from '@chakra-ui/react'
 
 ReactDOM.render(
-  <React.StrictMode>
-    <Container className="mt-4 mb-4">
-      <Row className="justify-content-md-center">
-        <Col sm="12" md="8">
-          <App />
-        </Col>
-      </Row>
-    </Container>
-  </React.StrictMode>,
+  <StrictMode>
+    <ChakraProvider>
+      <Box textAlign="center" size="xl" marginTop={4}>
+        <Container>
+          <Box minHeight="100vh">
+            <App />
+          </Box>
+          <Grid marginBottom={4} gap={2}>
+            <Divider />
+            <Text>
+              Copyright © {new Date().getFullYear()} Liang Chun Wong (
+              <Link href="https://github.com/liangchunn" target="_blank">
+                @liangchunn
+              </Link>
+              ). Not affiliated with, or endorsed by Kinetic Games.
+            </Text>
+          </Grid>
+        </Container>
+      </Box>
+    </ChakraProvider>
+  </StrictMode>,
   document.getElementById('root')
 )
 
