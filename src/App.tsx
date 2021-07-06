@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import {
   Box,
   Button,
@@ -10,7 +10,6 @@ import {
   Divider,
   Heading,
 } from '@chakra-ui/react'
-import { without } from 'lodash'
 import { narrowDecision } from './util/decider'
 import { allGhostsKeys, EvidenceKey, ghosts } from './util/ghosts'
 import { setToArray } from './util/setToArray'
@@ -21,6 +20,7 @@ import Options from './components/Options'
 import { ColorModeSwitcher } from './ColorModeSwitcher'
 import { useLocalStorage } from './hooks/useLocalStorage'
 import { FeatureToggleKey, FEATURE_TOGGLE } from './util/features'
+import { without } from './util/array'
 
 export default function App() {
   const [options, setOptions] = useLocalStorage<
@@ -32,33 +32,19 @@ export default function App() {
   const [eliminatedEvidence, setEliminatedEvidence] = useState<EvidenceKey[]>(
     []
   )
-  const [ghostKeys, setGhostKeys] = useState(allGhostsKeys)
+  const [ghostKeys] = useState(allGhostsKeys)
 
-  const handleYokaiAndHantuToggle = useCallback(
-    (enable: boolean) => {
-      if (enable) {
-        setGhostKeys(allGhostsKeys)
-      } else {
-        setGhostKeys(
-          allGhostsKeys.filter((k) => k !== 'yokai' && k !== 'hantu')
-        )
-      }
-    },
-    [setGhostKeys]
-  )
+  // FEATURE: disabled due to no effects neededd
+  // const effectMap: Record<FeatureToggleKey, (val: boolean) => void> = useMemo(
+  //   () => ({}),
+  //   []
+  // )
 
-  const effectMap: Record<FeatureToggleKey, (val: boolean) => void> = useMemo(
-    () => ({
-      ENABLE_BETA_HANTU_AND_YOKAI: handleYokaiAndHantuToggle,
-    }),
-    [handleYokaiAndHantuToggle]
-  )
-
-  useEffect(() => {
-    ;(Object.keys(options) as FeatureToggleKey[]).forEach((key) => {
-      effectMap[key](options[key])
-    })
-  }, [options, effectMap])
+  // useEffect(() => {
+  //   ;(Object.keys(options) as FeatureToggleKey[]).forEach((key) => {
+  //     effectMap[key](options[key])
+  //   })
+  // }, [options, effectMap])
 
   const handleEvidenceToggle = useCallback(
     (e: EvidenceKey) => {

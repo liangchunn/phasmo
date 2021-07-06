@@ -9,6 +9,7 @@ import {
   Checkbox,
   ModalBody,
   ModalFooter,
+  Text,
 } from '@chakra-ui/react'
 import React, { FormEvent } from 'react'
 import { useCallback } from 'react'
@@ -53,6 +54,9 @@ const Options: React.FC<OptionsProps> = ({ options, setOptions }) => {
           <ModalHeader>Options</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
+            {ALL_FEATURE_TOGGLES.length === 0 && (
+              <Text as="i">No options available</Text>
+            )}
             {ALL_FEATURE_TOGGLES.map((key) => {
               return (
                 <Checkbox

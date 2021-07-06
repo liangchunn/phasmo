@@ -1,4 +1,4 @@
-import { difference, without } from 'lodash'
+import { difference, without } from './array'
 import { EvidenceKey, GhostKeys, ghostEvidence } from './ghosts'
 
 export function narrowDecision(
