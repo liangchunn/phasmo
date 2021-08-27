@@ -21,6 +21,7 @@ import { ColorModeSwitcher } from './ColorModeSwitcher'
 import { useLocalStorage } from './hooks/useLocalStorage'
 import { FeatureToggleKey, FEATURE_TOGGLE } from './util/features'
 import { without } from './util/array'
+import { getIndefiniteArticle } from './util/grammar'
 
 export default function App() {
   const [options, setOptions] = useLocalStorage<
@@ -93,7 +94,9 @@ export default function App() {
     <Grid gap={4}>
       <Box>
         <Flex align="center">
-          <Heading size="md">👻🔎</Heading>
+          <Heading size="md">
+            👻🔎 <span className="version">v0.3.0</span>
+          </Heading>
           <Spacer />
           <Stack spacing={2} direction="row" align="center">
             <ColorModeSwitcher />
@@ -150,7 +153,7 @@ export default function App() {
         <Grid gap={2}>
           <Box>
             <Heading size="md">
-              The ghost is a{' '}
+              The ghost is {getIndefiniteArticle(ghosts[possibleGhosts[0]])}{' '}
               <span
                 style={{ fontStyle: 'italic', textDecoration: 'underline' }}
               >

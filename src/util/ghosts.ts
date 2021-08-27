@@ -5,6 +5,7 @@ import OrbImage from '../images/orb.png'
 import SpiritImage from '../images/spirit.png'
 import WritingImage from '../images/writing.png'
 import NoneImage from '../images/none.png'
+import DotsImage from '../images/dots.png'
 
 export const evidenceImage: Record<EvidenceKey | 'none', string> = {
   freezing: FreezingImage,
@@ -13,6 +14,7 @@ export const evidenceImage: Record<EvidenceKey | 'none', string> = {
   spirit: SpiritImage,
   writing: WritingImage,
   fingerprints: FingerprintImage,
+  dots: DotsImage,
   none: NoneImage,
 }
 
@@ -23,6 +25,7 @@ export const evidence = {
   spirit: 'Spirit Box',
   writing: 'Ghost Writing',
   fingerprints: 'Fingerprints',
+  dots: 'D.O.T.S Projector',
 }
 
 export type EvidenceKey = keyof typeof evidence
@@ -46,6 +49,8 @@ export const ghosts = {
   spirit: 'Spirit',
   yokai: 'Yokai',
   hantu: 'Hantu',
+  goryo: 'Goryo',
+  myling: 'Myling',
 }
 
 export type GhostKeys = keyof typeof ghosts
@@ -53,20 +58,22 @@ export type GhostKeys = keyof typeof ghosts
 export const allGhostsKeys: GhostKeys[] = Object.keys(ghosts) as GhostKeys[]
 
 export const ghostEvidence: Record<GhostKeys, EvidenceKey[]> = {
-  phantom: ['freezing', 'emf', 'orb'],
-  banshee: ['freezing', 'emf', 'fingerprints'],
-  mare: ['freezing', 'orb', 'spirit'],
-  yurei: ['freezing', 'orb', 'writing'],
-  demon: ['freezing', 'spirit', 'writing'],
-  wraith: ['freezing', 'spirit', 'fingerprints'],
-  jinn: ['emf', 'orb', 'spirit'],
-  shade: ['emf', 'orb', 'writing'],
-  oni: ['emf', 'spirit', 'writing'],
-  revenant: ['emf', 'writing', 'fingerprints'],
-  poltergeist: ['orb', 'spirit', 'fingerprints'],
-  spirit: ['spirit', 'writing', 'fingerprints'],
-  yokai: ['spirit', 'orb', 'writing'],
-  hantu: ['fingerprints', 'orb', 'writing'],
+  phantom: ['spirit', 'fingerprints', 'dots'],
+  banshee: ['orb', 'fingerprints', 'dots'],
+  mare: ['orb', 'spirit', 'writing'],
+  yurei: ['freezing', 'orb', 'dots'],
+  demon: ['freezing', 'writing', 'fingerprints'],
+  wraith: ['emf', 'spirit', 'dots'],
+  jinn: ['freezing', 'emf', 'fingerprints'],
+  shade: ['freezing', 'emf', 'writing'],
+  oni: ['freezing', 'emf', 'dots'],
+  revenant: ['freezing', 'orb', 'writing'],
+  poltergeist: ['spirit', 'writing', 'fingerprints'],
+  spirit: ['emf', 'spirit', 'writing'],
+  yokai: ['orb', 'spirit', 'dots'],
+  hantu: ['freezing', 'orb', 'fingerprints'],
+  goryo: ['emf', 'fingerprints', 'dots'],
+  myling: ['emf', 'writing', 'fingerprints'],
 }
 
 export const ghostDescription: Record<GhostKeys, string> = {
@@ -95,6 +102,10 @@ export const ghostDescription: Record<GhostKeys, string> = {
     'A Yokai is a common type of ghost that is attracted to human voices. They can usually be found haunting family homes.',
   hantu:
     'A Hantu is a rare ghost that can be found in hot climates. They are known to attack often during cold weather.',
+  goryo:
+    'Using a video camera is the only way to view a Goryo, when it passes through a DOTS projector.',
+  myling:
+    'A Myling is a very vocal and active ghost. They are rumoured to be quiet when hunting their prey.',
 }
 
 export const ghostStrengths: Record<GhostKeys, string> = {
@@ -120,6 +131,9 @@ export const ghostStrengths: Record<GhostKeys, string> = {
   yokai:
     "Talking near a Yokai will anger it and increase it's chance of attacking.",
   hantu: 'Lower temperatures can cause the Hantu to move at faster speeds.',
+  goryo:
+    'A Goryo will usually only show itself on camera if there are no people nearby.',
+  myling: 'A Myling is known to be quieter when hunting.',
 }
 
 export const ghostWeaknesses: Record<GhostKeys, string> = {
@@ -144,6 +158,8 @@ export const ghostWeaknesses: Record<GhostKeys, string> = {
     'Using Smudge Sticks on a Spirit will stop it attacking for 180 seconds instead of 90.',
   yokai: 'When hunting a Yokai can only hear voices close to it.',
   hantu: 'A Hantu will move slower in warmer areas.',
+  goryo: 'They are rarely seen far from their place of death.',
+  myling: 'Mylings more frequently make paranormal sounds.',
 }
 
 export function getGhostEvidenceImages(

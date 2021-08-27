@@ -43,6 +43,10 @@ const Options: React.FC<OptionsProps> = ({ options, setOptions }) => {
     [options, setOptions]
   )
 
+  if (ALL_FEATURE_TOGGLES.length === 0) {
+    return null
+  }
+
   return (
     <>
       <Button variant="outline" onClick={onOpen}>
