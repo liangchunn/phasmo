@@ -10,8 +10,8 @@ import {
   Text,
 } from '@chakra-ui/react'
 import './index.css'
-import App from './App'
 import * as serviceWorkerRegistration from './serviceWorkerRegistration'
+import { DataLoaderWrapper } from './DataLoaderWrapper'
 
 ReactDOM.render(
   <StrictMode>
@@ -19,7 +19,7 @@ ReactDOM.render(
       <Box textAlign="center" size="xl" marginTop={4}>
         <Container>
           <Box minHeight="100vh">
-            <App />
+            <DataLoaderWrapper />
           </Box>
           <Grid marginTop={4} marginBottom={4} gap={2}>
             <Divider />

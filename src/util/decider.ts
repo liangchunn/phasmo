@@ -1,26 +1,27 @@
 import { difference, without } from './array'
-import { EvidenceKey, GhostKeys, ghostEvidence } from './ghosts'
 
 export function narrowDecision(
-  ghostKeys: GhostKeys[],
-  evidence: EvidenceKey[],
-  eliminatedEvidence: EvidenceKey[] = []
+  allGhostEvidences: Record<string, string[]>,
+  ghostKeys: string[],
+  evidence: string[],
+  eliminatedEvidence: string[] = []
 ) {
-  const possibleGhosts: Set<GhostKeys> = new Set()
-  const possibleLeftoverEvidence: Set<EvidenceKey> = new Set()
+  const possibleGhosts: Set<string> = new Set()
+  const possibleLeftoverEvidence: Set<string> = new Set()
   for (const key of ghostKeys) {
+    const ghostEvidence: string[] = allGhostEvidences[key]
     if (
       eliminatedEvidence.length &&
-      ghostEvidence[key].some((e) => eliminatedEvidence.includes(e))
+      ghostEvidence.some((e: string) => eliminatedEvidence.includes(e))
     ) {
       continue
     }
-    if (difference(evidence, ghostEvidence[key]).length === 0) {
+    if (difference(evidence, ghostEvidence).length === 0) {
       possibleGhosts.add(key)
       for (const leftoverEvidence of difference(
         eliminatedEvidence.length
-          ? without(ghostEvidence[key], ...eliminatedEvidence)
-          : ghostEvidence[key],
+          ? without(ghostEvidence, ...eliminatedEvidence)
+          : ghostEvidence,
         evidence
       )) {
         possibleLeftoverEvidence.add(leftoverEvidence)

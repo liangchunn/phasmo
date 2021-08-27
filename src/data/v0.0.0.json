@@ -1,0 +1,40 @@
+{
+  "version": "0.3.1",
+  "ghostKeys": [
+    "phantom",
+    "banshee",
+    "mare"
+  ],
+  "ghostData": {
+    "phantom": {
+      "name": "Phantom",
+      "description": "A Phantom is a Ghost that can possess the living, most commonly summoned by a Ouija Board. It also induces fear into those around it.",
+      "strengths": "Looking at a Phantom will considerably drop your Sanity. This refers to any visible manifestations of the Phantom, including during a Hunt.",
+      "weaknesses": "Taking a photo of the Phantom will make it temporarily disappear. This, however, will not stop a Hunt."
+    },
+    "banshee": {
+      "name": "Banshee",
+      "description": "A Banshee is a natural hunter and will attack anything. It has been known to stalk its prey one at a time until making its kill.",
+      "strengths": "A Banshee will focus on one player at a time until it kills them.",
+      "weaknesses": "Banshees fear the Crucifix, which boosts the Hunt-stopping range of one from 3 meters to 5 meters against it."
+    },
+    "mare": {
+      "name": "Mare",
+      "description": "A Mare is the source of all nightmares, making it most powerful in the dark.",
+      "strengths": "Increased chance to attack in the dark. As such, it will do what it can to achieve this, such as turning off lights and tripping the fuse box.",
+      "weaknesses": "Turning the lights on will lower its chance to attack."
+    }
+  },
+  "ghostEvidence": {
+    "phantom": ["spirit", "fingerprints", "dots"],
+    "banshee": ["orb", "fingerprints", "dots"],
+    "mare": ["orb", "spirit", "writing"]
+  },
+  "evidence": {
+    "orb": "Ghost Orb",
+    "spirit":"Spirit Box",
+    "writing": "Ghost Writing",
+    "fingerprints": "Fingerprints",
+    "dots": "D.O.T.S Projector"
+  }
+}

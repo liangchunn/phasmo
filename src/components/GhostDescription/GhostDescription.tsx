@@ -1,21 +1,21 @@
 import { SimpleGrid, Box, Text, HStack, Image, Grid } from '@chakra-ui/react'
 import StrengthImage from '../../images/strength.png'
 import WeaknessImage from '../../images/weakness.png'
-import {
-  ghostDescription,
-  GhostKeys,
-  ghostStrengths,
-  ghostWeaknesses,
-} from '../../util/ghosts'
 
 type GhostDescriptionProps = {
-  ghostKey: GhostKeys
+  description: string
+  strengths: string
+  weaknesses: string
 }
 
-export default function GhostDescription({ ghostKey }: GhostDescriptionProps) {
+export default function GhostDescription({
+  strengths,
+  weaknesses,
+  description,
+}: GhostDescriptionProps) {
   return (
     <Grid gap={4}>
-      <Text>{ghostDescription[ghostKey]}</Text>
+      <Text>{description}</Text>
       <SimpleGrid columns={2} spacing={4}>
         <Box>
           <HStack>
@@ -26,7 +26,7 @@ export default function GhostDescription({ ghostKey }: GhostDescriptionProps) {
               alt="Strength"
             />
           </HStack>
-          <Text align="left">{ghostStrengths[ghostKey]}</Text>
+          <Text align="left">{strengths}</Text>
         </Box>
         <Box>
           <HStack>
@@ -37,7 +37,7 @@ export default function GhostDescription({ ghostKey }: GhostDescriptionProps) {
               alt="Weaknesses"
             />
           </HStack>
-          <Text align="left">{ghostWeaknesses[ghostKey]}</Text>
+          <Text align="left">{weaknesses}</Text>
         </Box>
       </SimpleGrid>
     </Grid>

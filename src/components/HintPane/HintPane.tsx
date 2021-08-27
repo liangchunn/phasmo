@@ -8,23 +8,22 @@ import {
   Heading,
   Image,
 } from '@chakra-ui/react'
-import {
-  evidence,
-  evidenceImage,
-  EvidenceKey,
-  GhostKeys,
-} from '../../util/ghosts'
 import GhostDescriptionPopup from '../GhostDescriptionPopup'
+import { getEvidenceImage } from '../../util/images'
+import { DataType } from '../../util/data'
 
 type HintPaneProps = {
-  possibleLeftoverEvidence: EvidenceKey[]
-  possibleGhosts: GhostKeys[]
+  data: DataType
+  possibleLeftoverEvidence: string[]
+  possibleGhosts: string[]
 }
 
 export default function HintPane({
+  data,
   possibleLeftoverEvidence,
   possibleGhosts,
 }: HintPaneProps) {
+  const { evidence } = data
   return (
     <>
       <Grid gap={2}>
@@ -39,7 +38,7 @@ export default function HintPane({
               <WrapItem key={key}>
                 <Flex direction="column" align="center">
                   <Image
-                    src={evidenceImage[key]}
+                    src={getEvidenceImage(key)}
                     alt={evidence[key]}
                     htmlWidth={48}
                     htmlHeight={48}
@@ -62,7 +61,7 @@ export default function HintPane({
           <Wrap justify="center">
             {possibleGhosts.map((key) => (
               <WrapItem key={key}>
-                <GhostDescriptionPopup ghostKey={key} />
+                <GhostDescriptionPopup data={data} ghostKey={key} />
               </WrapItem>
             ))}
           </Wrap>

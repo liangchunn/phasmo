@@ -3,52 +3,51 @@ import {
   Box,
   Button,
   Spacer,
-  Stack,
   Text,
   Flex,
   Grid,
   Divider,
   Heading,
+  Stack,
 } from '@chakra-ui/react'
 import { narrowDecision } from './util/decider'
-import { allGhostsKeys, EvidenceKey, ghosts } from './util/ghosts'
 import { setToArray } from './util/setToArray'
 import EvidenceSelector from './components/EvidenceSelector'
 import HintPane from './components/HintPane'
-import GhostDescription from './components/GhostDescription'
 import Options from './components/Options'
-import { ColorModeSwitcher } from './ColorModeSwitcher'
 import { useLocalStorage } from './hooks/useLocalStorage'
 import { FeatureToggleKey, FEATURE_TOGGLE } from './util/features'
 import { without } from './util/array'
-import { getIndefiniteArticle } from './util/grammar'
+import { DataType } from './util/data'
+import { ColorModeSwitcher } from './ColorModeSwitcher'
+import VersionSelector from './components/VersionSelector'
+import GhostResult from './components/GhostResult'
 
-export default function App() {
+type AppProps = {
+  data: DataType | null
+  version: string
+  setVersion: (version: string) => void
+  isLoading: boolean
+}
+
+export default function App({
+  data,
+  version,
+  setVersion,
+  isLoading,
+}: AppProps) {
   const [options, setOptions] = useLocalStorage<
     Record<FeatureToggleKey, boolean>
   >('options', FEATURE_TOGGLE)
 
-  const [toggledEvidence, setEvidence] = useState<EvidenceKey[]>([])
+  const [toggledEvidence, setEvidence] = useState<string[]>([])
   const [isInEliminateMode, setIsInEliminateMode] = useState(false)
-  const [eliminatedEvidence, setEliminatedEvidence] = useState<EvidenceKey[]>(
-    []
-  )
-  const [ghostKeys] = useState(allGhostsKeys)
+  const [eliminatedEvidence, setEliminatedEvidence] = useState<string[]>([])
 
-  // FEATURE: disabled due to no effects neededd
-  // const effectMap: Record<FeatureToggleKey, (val: boolean) => void> = useMemo(
-  //   () => ({}),
-  //   []
-  // )
-
-  // useEffect(() => {
-  //   ;(Object.keys(options) as FeatureToggleKey[]).forEach((key) => {
-  //     effectMap[key](options[key])
-  //   })
-  // }, [options, effectMap])
+  const ghostKeys = data?.ghostKeys ?? null
 
   const handleEvidenceToggle = useCallback(
-    (e: EvidenceKey) => {
+    (e: string) => {
       if (isInEliminateMode) {
         if (eliminatedEvidence.includes(e)) {
           setEliminatedEvidence(without(eliminatedEvidence, e))
@@ -71,7 +70,14 @@ export default function App() {
   }
 
   const { possibleLeftoverEvidence, possibleGhosts } = useMemo(() => {
+    if (data === null || ghostKeys === null) {
+      return {
+        possibleLeftoverEvidence: [],
+        possibleGhosts: [],
+      }
+    }
     const result = narrowDecision(
+      data.ghostEvidence,
       ghostKeys,
       toggledEvidence,
       eliminatedEvidence
@@ -80,7 +86,7 @@ export default function App() {
       possibleLeftoverEvidence: setToArray(result.possibleLeftoverEvidence),
       possibleGhosts: setToArray(result.possibleGhosts),
     }
-  }, [toggledEvidence, eliminatedEvidence, ghostKeys])
+  }, [toggledEvidence, eliminatedEvidence, ghostKeys, data])
 
   const hasEvidence = useMemo(() => !!toggledEvidence.length, [toggledEvidence])
 
@@ -90,15 +96,27 @@ export default function App() {
     setEliminatedEvidence([])
   }, [])
 
+  const resetAndSetVersion = (version: string) => {
+    handleReset()
+    setVersion(version)
+  }
+
+  const discoveredGhostKey =
+    possibleGhosts.length === 1 ? possibleGhosts[0] : null
+
   return (
     <Grid gap={4}>
       <Box>
         <Flex align="center">
-          <Heading size="md">
-            👻🔎 <span className="version">v0.3.0</span>
-          </Heading>
+          <div>
+            <Heading size="md">👻🔎</Heading>
+          </div>
           <Spacer />
           <Stack spacing={2} direction="row" align="center">
+            <VersionSelector
+              version={version}
+              setVersion={resetAndSetVersion}
+            />
             <ColorModeSwitcher />
             <Options options={options} setOptions={setOptions} />
             <Button onClick={handleReset} colorScheme="red">
@@ -107,64 +125,56 @@ export default function App() {
           </Stack>
         </Flex>
       </Box>
-      <Grid gap={2}>
-        <Flex align="center">
-          <Heading size="md">Select Evidence</Heading>
-          <Spacer />
-          <Button
-            onClick={handleEliminateToggle}
-            variant={isInEliminateMode ? 'solid' : 'outline'}
-            colorScheme={isInEliminateMode ? 'blue' : 'black'}
-            size="sm"
-          >
-            {isInEliminateMode ? 'Eliminate Mode On' : 'Eliminate Mode Off'}
-          </Button>
-        </Flex>
-        <Box>
-          <EvidenceSelector
-            onEvidenceToggle={handleEvidenceToggle}
-            selectedEvidence={toggledEvidence}
-            eliminatedEvidence={eliminatedEvidence}
-            isInEliminateMode={isInEliminateMode}
-            possibleLeftoverEvidence={possibleLeftoverEvidence}
-          />
-        </Box>
-        <Box>
-          {!hasEvidence && !isInEliminateMode && (
-            <Text color="gray.500" size="md">
-              Select existing evidence to narrow down remaining evidence
-            </Text>
-          )}
-          {isInEliminateMode && (
-            <Text color="gray.500" size="md">
-              Eliminate evidence which are ruled-out by toggling
-            </Text>
-          )}
-        </Box>
-      </Grid>
-      {hasEvidence && <Divider />}
-      {hasEvidence && possibleGhosts.length !== 1 && (
-        <HintPane
-          possibleGhosts={possibleGhosts}
-          possibleLeftoverEvidence={possibleLeftoverEvidence}
-        />
-      )}
-      {possibleGhosts.length === 1 && (
-        <Grid gap={2}>
-          <Box>
-            <Heading size="md">
-              The ghost is {getIndefiniteArticle(ghosts[possibleGhosts[0]])}{' '}
-              <span
-                style={{ fontStyle: 'italic', textDecoration: 'underline' }}
+
+      {(data === null || isLoading) && <Text>Loading...</Text>}
+      {data !== null && !isLoading && (
+        <>
+          <Grid gap={2}>
+            <Flex align="center">
+              <Heading size="md">Select Evidence</Heading>
+              <Spacer />
+              <Button
+                onClick={handleEliminateToggle}
+                variant={isInEliminateMode ? 'solid' : 'outline'}
+                colorScheme={isInEliminateMode ? 'blue' : 'black'}
+                size="sm"
               >
-                {ghosts[possibleGhosts[0]]}
-              </span>
-            </Heading>
-          </Box>
-          <Box>
-            <GhostDescription ghostKey={possibleGhosts[0]} />
-          </Box>
-        </Grid>
+                {isInEliminateMode ? 'Eliminate Mode On' : 'Eliminate Mode Off'}
+              </Button>
+            </Flex>
+            <Box>
+              <EvidenceSelector
+                data={data}
+                onEvidenceToggle={handleEvidenceToggle}
+                selectedEvidence={toggledEvidence}
+                eliminatedEvidence={eliminatedEvidence}
+                isInEliminateMode={isInEliminateMode}
+                possibleLeftoverEvidence={possibleLeftoverEvidence}
+              />
+            </Box>
+            <Box>
+              {!hasEvidence && !isInEliminateMode && (
+                <Text color="gray.500" size="md">
+                  Select existing evidence to narrow down remaining evidence
+                </Text>
+              )}
+              {isInEliminateMode && (
+                <Text color="gray.500" size="md">
+                  Eliminate evidence which are ruled-out by toggling
+                </Text>
+              )}
+            </Box>
+          </Grid>
+          {hasEvidence && <Divider />}
+          {hasEvidence && possibleGhosts.length !== 1 && (
+            <HintPane
+              data={data}
+              possibleGhosts={possibleGhosts}
+              possibleLeftoverEvidence={possibleLeftoverEvidence}
+            />
+          )}
+          <GhostResult data={data} ghostKey={discoveredGhostKey} />
+        </>
       )}
     </Grid>
   )

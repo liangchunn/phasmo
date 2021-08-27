@@ -1,33 +1,34 @@
 import { Wrap, WrapItem } from '@chakra-ui/react'
-import {
-  allEvidenceKeys,
-  evidence,
-  evidenceImage,
-  EvidenceKey,
-} from '../../util/ghosts'
+import { DataType } from '../../util/data'
+import { getEvidenceImage } from '../../util/images'
 import EvidenceButton from './EvidenceButton'
 
 type EvidenceSelectorProps = {
-  selectedEvidence: EvidenceKey[]
-  onEvidenceToggle: (e: EvidenceKey) => void
-  possibleLeftoverEvidence: EvidenceKey[]
-  eliminatedEvidence: EvidenceKey[]
+  data: DataType
+  selectedEvidence: string[]
+  onEvidenceToggle: (e: string) => void
+  possibleLeftoverEvidence: string[]
+  eliminatedEvidence: string[]
   isInEliminateMode: boolean
 }
 
 export default function EvidenceSelector({
+  data,
   selectedEvidence,
   onEvidenceToggle,
   possibleLeftoverEvidence,
   eliminatedEvidence,
   isInEliminateMode,
 }: EvidenceSelectorProps) {
+  const { evidence } = data
+  const allEvidenceKeys = Object.keys(evidence)
+
   return (
     <Wrap spacing={2}>
       {allEvidenceKeys.map((evidenceKey) => (
         <WrapItem key={evidenceKey}>
           <EvidenceButton
-            imgSrc={evidenceImage[evidenceKey]}
+            imgSrc={getEvidenceImage(evidenceKey)}
             label={evidence[evidenceKey]}
             onClick={onEvidenceToggle}
             isEliminated={eliminatedEvidence.includes(evidenceKey)}
